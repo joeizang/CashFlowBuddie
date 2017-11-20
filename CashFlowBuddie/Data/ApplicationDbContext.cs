@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using CashFlowBuddie.Models;
+using CashFlowBuddie.Entities;
 
 namespace CashFlowBuddie.Data
 {
@@ -22,5 +23,13 @@ namespace CashFlowBuddie.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<BankAccount> BankAccounts { get; set; }
+
+        public DbSet<CashFlow> CashFlows { get; set; }
+
+        public DbSet<CashFlowSource> CashFlowSources { get; set; }
+
+        public DbSet<CashFlowType> CashFlowTypes { get; set; }
     }
 }

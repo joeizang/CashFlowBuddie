@@ -1,4 +1,4 @@
-﻿using CashFlowBuddie.Abstractions;
+﻿using CashFlowBuddie.Data.Abstractions;
 using CashFlowBuddie.Domain.Entities.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CashFlowBuddie.Entities
+namespace CashFlowBuddie.Domain.Entities
 {
     public class BankAccount : EntityBase
     {

@@ -33,8 +33,6 @@ namespace CashFlowBuddie
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            //Add EF6 to project so it can be uesed.
-            services.AddScoped<CashFlowBuddieDb>(_ => new CashFlowBuddieDb(Configuration.GetConnectionString("DefaultConnection")));
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

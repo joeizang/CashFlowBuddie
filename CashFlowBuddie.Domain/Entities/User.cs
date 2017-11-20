@@ -1,8 +1,9 @@
-﻿using CashFlowBuddie.Abstractions;
+﻿using CashFlowBuddie.Data.Abstractions;
+using CashFlowBuddie.Domain.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace CashFlowBuddie.Entities
+namespace CashFlowBuddie.Domain.Entities
 {
     public class User : EntityBase
     {
