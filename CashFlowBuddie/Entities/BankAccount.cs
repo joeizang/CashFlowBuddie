@@ -2,6 +2,7 @@
 using CashFlowBuddie.Entities.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,9 +13,11 @@ namespace CashFlowBuddie.Entities
 
         public BankAccount()
         {
-
+            CashFlows = new List<CashFlow>();
         }
 
+        [DataType(DataType.Text)]
+        [StringLength(50)]
         public string AccountName { get; private set; }
 
         public Money BankBalance { get; private set; }
@@ -24,6 +27,8 @@ namespace CashFlowBuddie.Entities
 
         public User AccountHolder { get; private set; }
 
+        [DataType(DataType.Text)]
+        [StringLength(128)]
         public string UserId { get; private set; }
     }
 }
