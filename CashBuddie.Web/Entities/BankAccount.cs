@@ -1,14 +1,14 @@
-﻿using CashFlowBuddie.Abstractions;
-using CashFlowBuddie.Models;
+﻿using CashBuddie.Web.Models;
+using CashFlowBuddie.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CashFlowBuddie.Entities
+namespace CashFlowBuddie.Web.Entities
 {
-    public class BankAccount : IEntity
+    public class BankAccount : EntityBase
     {
 
         public BankAccount()
@@ -31,23 +31,5 @@ namespace CashFlowBuddie.Entities
         public ApplicationUser AccountHolder { get; private set; }
 
         public string UserId { get; private set; }
-
-        [Key]
-        [StringLength(200)]
-        public virtual string Id { get; private set; }
-
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:d}")]
-        public virtual DateTimeOffset CreatedAt { get; private set; }
-
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:d}")]
-        public virtual DateTimeOffset UpdatedAt { get; private set; }
-
-        [StringLength(70)]
-        public virtual string CreatedBy { get; private set; }
-
-        [StringLength(70)]
-        public virtual string UpdatedBy { get; private set; }
     }
 }

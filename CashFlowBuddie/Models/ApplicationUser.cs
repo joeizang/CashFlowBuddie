@@ -12,9 +12,13 @@ namespace CashFlowBuddie.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser, IEntity
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "You must provide a valid email address to continue")]
-        [DataType(DataType.EmailAddress)]
-        public string EmailAddress { get; private set; }
+
+        public ApplicationUser()
+        {
+            CashFlows = new List<CashFlow>();
+            Accounts = new List<BankAccount>();
+        }
+
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "You must provide a first name to continue")]
         [DataType(DataType.Text)]
