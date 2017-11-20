@@ -22,7 +22,7 @@ namespace CashFlowBuddie.Entities
 
         [DataType(DataType.Text)]
         [StringLength(128)]
-        public string CashFlowSourceId { get; set; }
+        public string CashFlowSourceId { get; private set; }
 
         public CashFlowType CashFlowType { get; private set; }
 
@@ -34,7 +34,7 @@ namespace CashFlowBuddie.Entities
         [StringLength(128)]
         public string UserId { get; private set; }
 
-        public User User { get; set; }
+        public User User { get; private set; }
 
         public Money Amount { get; private set; }
     }

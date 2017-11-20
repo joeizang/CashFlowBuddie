@@ -9,6 +9,10 @@ namespace CashFlowBuddie.Data
 {
     public class CashFlowBuddieDb : DbContext
     {
+        public CashFlowBuddieDb(string nameOrConnectionString) : base(nameOrConnectionString)
+        {
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
