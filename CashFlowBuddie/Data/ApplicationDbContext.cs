@@ -22,6 +22,15 @@ namespace CashFlowBuddie.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+
+            builder.Entity<CashFlow>()
+                .HasOne(cf => cf.CashFlowSouce)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<CashFlow>()
+                .HasOne(cf => cf.CashFlowType)
+                .WithOne().OnDelete(DeleteBehavior.Restrict);
         }
 
         public DbSet<BankAccount> BankAccounts { get; set; }

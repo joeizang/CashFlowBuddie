@@ -1,5 +1,6 @@
 ﻿using CashFlowBuddie.Abstractions;
 using CashFlowBuddie.Domain.Entities.ValueObjects;
+using CashFlowBuddie.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -25,7 +26,7 @@ namespace CashFlowBuddie.Entities
 
         public ICollection<CashFlow> CashFlows { get; private set; }
 
-        public User AccountHolder { get; private set; }
+        public ApplicationUser AccountHolder { get; private set; }
 
         [DataType(DataType.Text)]
         [StringLength(128)]
