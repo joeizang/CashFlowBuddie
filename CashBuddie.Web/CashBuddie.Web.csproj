@@ -128,6 +128,12 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -188,14 +194,14 @@
     <Reference Include="Unity.Abstractions, Version=2.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.Abstractions.2.3.0\lib\net45\Unity.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.AspNet.WebApi, Version=5.0.7.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.AspNet.WebApi.5.0.7\lib\net45\Unity.AspNet.WebApi.dll</HintPath>
+    <Reference Include="Unity.AspNet.WebApi, Version=5.0.8.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.AspNet.WebApi.5.0.8\lib\net45\Unity.AspNet.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Container, Version=5.3.0.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.Container.5.3.0\lib\net45\Unity.Container.dll</HintPath>
+    <Reference Include="Unity.Container, Version=5.3.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Container.5.3.1\lib\net45\Unity.Container.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Mvc, Version=5.0.7.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.Mvc.5.0.7\lib\net45\Unity.Mvc.dll</HintPath>
+    <Reference Include="Unity.Mvc, Version=5.0.8.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Mvc.5.0.8\lib\net45\Unity.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
@@ -258,7 +264,9 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\BankAccountsInputModel.cs" />
     <Compile Include="Models\CashBuddieContext.cs" />
+    <Compile Include="Models\CashFlowInputModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IndexInputModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -270,6 +278,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

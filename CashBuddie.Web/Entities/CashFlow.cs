@@ -41,6 +41,6 @@ namespace CashFlowBuddie.Web.Entities
         [Required]
         [DataType(DataType.Currency)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d2}")]
-        public decimal Amount { get; set; }
+        public decimal Amount { get; private set; }
     }
 }
