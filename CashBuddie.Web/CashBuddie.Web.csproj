@@ -250,6 +250,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Extensions\JsonExtension.cs" />
+    <Compile Include="Infrastructure\Helpers\JsonHtmlHelper.cs" />
     <Compile Include="Migrations\201711202122318_initialDb.cs" />
     <Compile Include="Migrations\201711202122318_initialDb.Designer.cs">
       <DependentUpon>201711202122318_initialDb.cs</DependentUpon>
@@ -258,6 +260,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CashBuddieContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IndexInputModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -290,6 +293,8 @@
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />

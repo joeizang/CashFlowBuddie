@@ -14,12 +14,17 @@ namespace CashBuddie.Web.Controllers
 {
     public class BankAccountsController : Controller
     {
-        private CashBuddieContext db = new CashBuddieContext();
+        private readonly CashBuddieContext _db;
+
+        public BankAccountsController(CashBuddieContext db)
+        {
+            _db = db;
+        }
 
         // GET: BankAccounts
         public async Task<ActionResult> Index()
         {
-            return View(await db.Accounts.ToListAsync());
+            return View(await _db.Accounts.ToListAsync());
         }
 
         // GET: BankAccounts/Details/5
@@ -29,7 +34,7 @@ namespace CashBuddie.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BankAccount bankAccount = await db.Accounts.FindAsync(id);
+            BankAccount bankAccount = await _db.Accounts.FindAsync(id);
             if (bankAccount == null)
             {
                 return HttpNotFound();
@@ -52,8 +57,8 @@ namespace CashBuddie.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Accounts.Add(bankAccount);
-                await db.SaveChangesAsync();
+                _db.Accounts.Add(bankAccount);
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -67,7 +72,7 @@ namespace CashBuddie.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BankAccount bankAccount = await db.Accounts.FindAsync(id);
+            BankAccount bankAccount = await _db.Accounts.FindAsync(id);
             if (bankAccount == null)
             {
                 return HttpNotFound();
@@ -84,8 +89,8 @@ namespace CashBuddie.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(bankAccount).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                _db.Entry(bankAccount).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(bankAccount);
@@ -98,7 +103,7 @@ namespace CashBuddie.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BankAccount bankAccount = await db.Accounts.FindAsync(id);
+            BankAccount bankAccount = await _db.Accounts.FindAsync(id);
             if (bankAccount == null)
             {
                 return HttpNotFound();
@@ -111,9 +116,9 @@ namespace CashBuddie.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            BankAccount bankAccount = await db.Accounts.FindAsync(id);
-            db.Accounts.Remove(bankAccount);
-            await db.SaveChangesAsync();
+            BankAccount bankAccount = await _db.Accounts.FindAsync(id);
+            _db.Accounts.Remove(bankAccount);
+            await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
@@ -121,7 +126,7 @@ namespace CashBuddie.Web.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

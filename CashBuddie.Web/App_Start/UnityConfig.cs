@@ -1,5 +1,7 @@
+using CashBuddie.Web.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
-
+using System.Data.Entity;
 using Unity;
 
 namespace CashBuddie.Web
@@ -42,6 +44,7 @@ namespace CashBuddie.Web
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType<DbContext, CashBuddieContext>();
         }
     }
 }
