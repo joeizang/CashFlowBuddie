@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CashBuddie.Web.Infrastructure.MapperConfig;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,6 +19,7 @@ namespace CashBuddie.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            AutoMapperInitializer.Initialize();
         }
     }
 }

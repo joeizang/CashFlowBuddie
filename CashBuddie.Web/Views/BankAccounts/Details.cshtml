@@ -1,7 +1,8 @@
-﻿@model CashFlowBuddie.Web.Entities.BankAccount
+﻿@model CashBuddie.Web.Models.InputModels.BankAccountDetailModel
+@using CashBuddie.Web.Models.InputModels
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Account Details";
 }
 
 <h2>Details</h2>
@@ -10,65 +11,53 @@
     <h4>BankAccount</h4>
     <hr />
     <dl class="dl-horizontal">
+        
+
         <dt>
-            @Html.DisplayNameFor(model => model.AccountName)
+            @Html.DisplayNameFor(model => model.BankAccountNumber)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.AccountName)
+            @Html.DisplayFor(model => model.BankAccountNumber)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.BankBalance)
+            @Html.DisplayNameFor(model => model.AccountBalance)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.BankBalance)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UpdatedBy)
+            @Html.DisplayFor(model => model.AccountBalance)
         </dd>
 
     </dl>
 </div>
+
+
+<table class="table">
+    <tr>
+
+        <th>Cash Date</th>
+        <th>Cash Source</th>
+        <th>Income/Expense</th>
+        <th>Amount</th>
+    </tr>
+    @foreach (var item in Model.Transactions)
+    {
+
+        <tr>
+            <td>@item.CashActivityDate.Date</td>
+            <td>@item.Source</td>
+            <td>@item.Type</td>
+            <td>@item.Amount</td>
+        </tr>
+    }
+</table>
+
+<br />
+<br />
+<br />
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new BankAccountEditModel.BankAccountEditInputModel { Id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

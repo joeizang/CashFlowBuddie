@@ -1,69 +1,61 @@
-﻿@model IEnumerable<CashFlowBuddie.Web.Entities.BankAccount>
+﻿
+@model CashBuddie.Web.Models.InputModels.BankAccountInputModel.BankAccountResultModel
+@using CashBuddie.Web.Models.InputModels
+@using PagedList.Mvc
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Bank Accounts";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class="btn btn-primary" })
+    
 </p>
+<form method="GET">
+    <p>
+        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+</form>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.AccountName)
+            @Html.ActionLink("Account Number", "Index", new BankAccountInputModel { SortOrder = Model.NameSortParm, CurrentFilter = Model.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.BankBalance)
+            @Html.ActionLink("Type Of Cash Flow", "Index", new BankAccountInputModel { SortOrder = Model.DateSortParm, CurrentFilter = Model.CurrentFilter })
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedAt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UpdatedBy)
-        </th>
+        
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.AccountName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BankBalance)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedAt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdatedAt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UpdatedBy)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+
+    @{ int i = 0; }
+    @foreach (var item in Model.Results)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankAccountNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InstitutionName)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { Id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new BankAccountDetailModel.BankAccountDetailInputModel { Id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { Id = item.Id })
+            </td>
+        </tr>
+        i++;
+    }
 
 </table>
+<br />
+    Page @(Model.Results.PageCount < Model.Results.PageNumber ? 0 : Model.Results.PageNumber) of @Model.Results.PageCount
+
+    @Html.PagedListPager(Model.Results, page => Url.Action("Index",new { Page = page, SortOrder = Model.CurrentSort, CurrentFilter = Model.CurrentFilter }))

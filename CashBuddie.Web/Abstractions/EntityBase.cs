@@ -10,20 +10,20 @@ namespace CashFlowBuddie.Abstractions
     {
         [Key]
         [StringLength(128)]
-        public virtual string Id { get; private set; }
+        public virtual string Id { get; set; }
 
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString ="{0:d}")]
-        public virtual DateTimeOffset CreatedAt { get; private set; }
+        public virtual DateTimeOffset CreatedAt { get; set; }
 
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:d}")]
-        public virtual DateTimeOffset UpdatedAt { get; private set; }
+        public virtual DateTimeOffset UpdatedAt { get; set; }
 
         [StringLength(70)]
-        public virtual string CreatedBy { get; private set; }
+        public virtual string CreatedBy { get; set; }
 
         [StringLength(70)]
-        public virtual string UpdatedBy { get; private set; }
+        public virtual string UpdatedBy { get; set; }
     }
 }
