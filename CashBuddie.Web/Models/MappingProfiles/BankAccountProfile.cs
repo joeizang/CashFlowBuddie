@@ -17,13 +17,21 @@ namespace CashBuddie.Web.Models.MappingProfiles
         {
             CreateMap<BankAccount, BankAccountVM>().ReverseMap()
                 .ForMember(destination => destination.Id, source => source.MapFrom(propt => propt.BankAccountNumber));
+
             CreateMap<BankAccount, BankAccountDetailModel>()
-                .ForMember(dest => dest.Transactions, source => source.MapFrom(propt => propt.CashFlows));
+                .ForMember(dest => dest.Transactions, source => source.MapFrom(propt => propt.CashFlows))
+                .ForMember(dest => dest.AccountBalance, source => source.MapFrom(propt => propt.BankBalance))
+                .ForMember(dest => dest.BankAccountNumber, source => source.MapFrom(propt => propt.Id));
+
             CreateMap<BankAccount, BankAccountEditModel>().ReverseMap()
                 .ForMember(dest => dest.AccountName, source => source.MapFrom(opt => opt.NameOfAccount))
                 .ForMember(dest => dest.InstitutionName, source => source.MapFrom(opt => opt.InstitutionName))
-                .ForMember(dest => dest.BankBalance, source => source.MapFrom(opt => opt.AccountBalance))
-                .ForMember(dest => dest.AccountHolder, source => source.MapFrom(opt => opt.NameOfAccount));
+                .ForMember(dest => dest.BankBalance, source => source.MapFrom(opt => opt.AccountBalance));
+
+            CreateMap<BankAccount, BankAccountDeleteModel>().ReverseMap()
+                .ForMember(dest => dest.BankBalance, source => source.MapFrom(opt => opt.BankBalance))
+                .ForMember(dest => dest.AccountName, source => source.MapFrom(opt => opt.AccountName))
+                .ForMember(dest => dest.InstitutionName, source => source.MapFrom(opt => opt.InstitutionName));
         }
     }
 }

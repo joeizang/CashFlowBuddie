@@ -27,6 +27,11 @@ namespace CashBuddie.Web.Models.InputModels
         }
     }
 
+    public class BankAccountMessages
+    {
+        public string Message { get; set; }
+    }
+
     public class CreateBankAccountModel
     {
         [Display(Name ="Account Balance")]
@@ -103,6 +108,25 @@ namespace CashBuddie.Web.Models.InputModels
             [Required]
             public string Id { get; set; }
         }
+    }
+
+    public class BankAccountDeleteModel
+    {
+        public string Id { get; set; }
+
+        public string Message { get; set; }
+
+        public string AccountName { get; set; }
+
+        [Required]
+        [DataType(DataType.Currency)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d2}")]
+        public decimal BankBalance { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [StringLength(50)]
+        public string InstitutionName { get; set; }
     }
 
     public class BankAccountVM

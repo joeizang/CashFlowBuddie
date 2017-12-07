@@ -48,7 +48,11 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { Id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new BankAccountDetailModel.BankAccountDetailInputModel { Id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { Id = item.Id })
+                @Html.ActionLink("Delete", "Delete",
+                    new BankAccountDeleteModel
+                    {
+                        Id = item.Id
+                    })
             </td>
         </tr>
         i++;

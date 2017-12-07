@@ -189,22 +189,32 @@ namespace CashBuddie.Web.Controllers
             }
             else
             {
-                bank = await _db.Accounts.Where(a => a.Id == bankAccount.Id).ProjectToSingleOrDefaultAsync<BankAccount>();
+                bank = await _db.Accounts.Where(a => a.Id == bankAccount.Id).SingleOrDefaultAsync();
+
+                Mapper.Map(bankAccount,bank);
 
                 _db.Entry(bank).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
             return View(bankAccount);
         }
 
         // GET: BankAccounts/Delete/5
-        public async Task<ActionResult> Delete(string id)
+        public async Task<ActionResult> Delete(BankAccountDeleteModel model)
         {
-            if (id == null)
+            if (string.IsNullOrWhiteSpace(model.Id))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                model.Message = "Make sure you are trying to delete a valid account!";
+                return View("Index", model);
             }
-            BankAccount bankAccount = await _db.Accounts.FindAsync(id);
+
+            var bankAccount = await _db.Accounts.
+                Where(a => a.Id.Equals(model.Id))
+                .ProjectToSingleOrDefaultAsync<BankAccountDeleteModel>();
+
+
             if (bankAccount == null)
             {
                 return HttpNotFound();
@@ -215,12 +225,26 @@ namespace CashBuddie.Web.Controllers
         // POST: BankAccounts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(string id)
+        public async Task<ActionResult> DeleteConfirmed(BankAccountDeleteModel model)
         {
-            BankAccount bankAccount = await _db.Accounts.FindAsync(id);
-            _db.Accounts.Remove(bankAccount);
+            try
+            {
+                await DoDelete(model.Id);
+                model.Message = "Delete Successful!";
+                TempData["Message"] = model;
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                model.Message = e.InnerException.Message;
+                return View("Delete", model);
+            }
+        }
+
+        private async Task DoDelete(string id)
+        {
+            _db.Entry(new BankAccount { Id = id }).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
-            return RedirectToAction("Index");
         }
 
     }
