@@ -10,8 +10,7 @@ using System.Web.Mvc;
 using CashBuddie.Web.Models;
 using CashFlowBuddie.Web.Entities;
 using AutoMapper;
-using PagedList;
-using CashBuddie.Web.Infrastructure.Extensions;
+using CashBuddie.Web.Infrastructure.Services;
 using CashBuddie.Web.Models.InputModels;
 
 namespace CashBuddie.Web.Controllers
@@ -28,72 +27,16 @@ namespace CashBuddie.Web.Controllers
         // GET: BankAccounts
         public ActionResult Index(BankAccountInputModel message)
         {
-            var model = new BankAccountInputModel.BankAccountResultModel
-            {
-                CurrentSort = message.SortOrder,
-                NameSortParm = String.IsNullOrEmpty(message.SortOrder) ? "name_desc" : "",
-                DateSortParm = message.SortOrder == "Date" ? "date_desc" : "Date",
-            };
+            var model = BankAccountHelper.PrepareResultModel(message);
 
-            if (string.IsNullOrWhiteSpace(message.SearchString))
-            {
-                message.Page = 1;
-            }
-            else
-            {
-                message.SearchString = message.CurrentFilter;
-            }
+            var accounts = BankAccountHelper.FilterOnContext(model, _db);
 
-            model.CurrentFilter = message.SearchString;
-            model.SearchString = message.SearchString;
+            accounts = BankAccountHelper.SortBankAccountSet(accounts,model);
 
-            var accounts = from a in _db.Accounts
-                           select a;
-            var accounts1 = _db.Accounts.AsQueryable();
-            if (!String.IsNullOrEmpty(message.SearchString))
-            {
-                accounts = accounts.Include(a => a.AccountHolder).Include(a => a.CashFlows)
-                                    .AsNoTracking().Where(a => a.AccountName.Contains(message.SearchString) ||
-                                                   a.AccountHolder.FirstName.Contains(message.SearchString));
-            }
-
-            
-            switch (message.SortOrder)
-            {
-                case "name_desc":
-                    accounts = accounts.OrderByDescending(s => s.AccountName);
-                    break;
-                case "typename_desc":
-                    accounts = accounts.OrderByDescending(s => s.AccountName);
-                    break;
-                case "typename":
-                    accounts = accounts.OrderByDescending(s => s.AccountName);
-                    break;
-                case "Amount_desc":
-                    accounts = accounts.OrderByDescending(s => s.AccountName);
-                    break;
-                case "Amount":
-                    accounts = accounts.OrderBy(s => s.BankBalance);
-                    break;
-                default: // Name ascending 
-                    accounts = accounts.OrderBy(s => s.AccountName);
-                    break;
-            }
-
-            int pageSize = 3;
-            int pageNumber = (message.Page ?? 1);
-            //model.Results = accounts.ProjectToPagedList<BankAccountVM>(pageNumber, pageSize);
-
-            model.Results = accounts.Select(x => new BankAccountVM
-            {
-                InstitutionName = x.InstitutionName,
-                Amount = x.BankBalance,
-                BankAccountNumber = x.Id,
-                Id = x.Id,
-            }).ToPagedList(pageNumber, pageSize);
+            var results = BankAccountHelper.ToResultModel(accounts,message, model);
 
             //return model
-            return View(model);
+            return View(results);
         }
 
         // GET: BankAccounts/Details/5
@@ -104,9 +47,8 @@ namespace CashBuddie.Web.Controllers
                 //rather than send an error page, I would like a modal stating the error message
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var bankAccount = await _db.Accounts.AsNoTracking().Include(a => a.CashFlows)
-                                       .Where(b => b.Id.Equals(model.Id))
-                                       .ProjectToSingleOrDefaultAsync<BankAccountDetailModel>();
+            var bankAccount = await BankAccountHelper.FindAnAccount(model, _db);
+
             if (bankAccount == null)
             {
                 return HttpNotFound();
@@ -128,9 +70,7 @@ namespace CashBuddie.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateBankAccountModel bankAccount)
         {
-            var result = await _db.Accounts.AsNoTracking()
-                .SingleOrDefaultAsync(b => b.AccountName.Equals(bankAccount.NameOfAccount)
-                && b.InstitutionName.Equals(bankAccount.InstitutionName) && b.Id.Equals(bankAccount.AccountNumber));
+            var result = BankAccountHelper.CheckForDuplicates(_db, bankAccount);
 
             if (ModelState.IsValid && result != null)
             {

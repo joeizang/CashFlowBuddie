@@ -64,7 +64,7 @@ namespace CashBuddie.Web.Models.InputModels
 
         public string BankAccountNumber { get; set; }
 
-        public List<CashFlowInputModel.CashFlowVM> Transactions { get; set; }
+        public List<CashFlowVM> Transactions { get; set; }
 
 
         public class BankAccountDetailInputModel
