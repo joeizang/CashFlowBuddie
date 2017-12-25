@@ -27,13 +27,12 @@ namespace CashBuddie.Web.Controllers
         // GET: BankAccounts
         public ActionResult Index(BankAccountInputModel message)
         {
-            var model = BankAccountHelper.PrepareResultModel(message);
+            var helper = new BankAccountHelper();
 
-            var accounts = BankAccountHelper.FilterOnContext(model, _db);
-
-            accounts = BankAccountHelper.SortBankAccountSet(accounts,model);
-
-            var results = BankAccountHelper.ToResultModel(accounts,message, model);
+            var results = helper.PrepareResultModel(message)
+                  .FilterOnContext(_db)
+                  .SortBankAccountSet()
+                  .ToResultModel(message);
 
             //return model
             return View(results);
@@ -70,9 +69,9 @@ namespace CashBuddie.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateBankAccountModel bankAccount)
         {
-            var result = BankAccountHelper.CheckForDuplicates(_db, bankAccount);
+            var result = await BankAccountHelper.CheckForDuplicates(_db, bankAccount);
 
-            if (ModelState.IsValid && result != null)
+            if (ModelState.IsValid && result)
             {
                 ModelState.AddModelError("Error", "The Account You Tried To Create Already Exists!!");
             }
@@ -121,8 +120,7 @@ namespace CashBuddie.Web.Controllers
             BankAccount bank;
 
 
-            if (!ModelState.IsValid && await _db.Accounts.AsNoTracking()
-                .AnyAsync(a => a.Id.Equals(bankAccount.AccountNumber)))
+            if (!ModelState.IsValid && await AccountExits(bankAccount))
             {
                 //more than one account exits that has the same account number
                 ModelState.AddModelError("Error", "More than one account has the account number you are trying to use!");
@@ -131,13 +129,19 @@ namespace CashBuddie.Web.Controllers
             {
                 bank = await _db.Accounts.Where(a => a.Id == bankAccount.Id).SingleOrDefaultAsync();
 
-                Mapper.Map(bankAccount,bank);
+                Mapper.Map(bankAccount, bank);
 
                 _db.Entry(bank).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(bankAccount);
+        }
+
+        private async Task<bool> AccountExits(BankAccountEditModel bankAccount)
+        {
+            return await _db.Accounts.AsNoTracking()
+                            .AnyAsync(a => a.Id.Equals(bankAccount.AccountNumber));
         }
 
         // GET: BankAccounts/Delete/5
@@ -169,7 +173,7 @@ namespace CashBuddie.Web.Controllers
         {
             try
             {
-                await DoDelete(model.Id);
+                await DoDelete(model);
                 model.Message = "Delete Successful!";
                 TempData["Message"] = model;
                 return RedirectToAction("Index");
@@ -181,10 +185,20 @@ namespace CashBuddie.Web.Controllers
             }
         }
 
-        private async Task DoDelete(string id)
+        private async Task DoDelete(BankAccountDeleteModel model)
         {
-            _db.Entry(new BankAccount { Id = id }).State = EntityState.Deleted;
-            await _db.SaveChangesAsync();
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(model.Id))
+                {
+                    _db.Entry(new BankAccount { Id = model.Id }).State = EntityState.Deleted;
+                    await _db.SaveChangesAsync(); 
+                }
+            }
+            catch (Exception e)
+            {
+                model.Message = e.Message;
+            }
         }
 
     }

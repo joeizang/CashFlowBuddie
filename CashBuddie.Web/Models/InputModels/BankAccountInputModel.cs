@@ -120,7 +120,6 @@ namespace CashBuddie.Web.Models.InputModels
 
         [Required]
         [DataType(DataType.Currency)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d2}")]
         public decimal BankBalance { get; set; }
 
         [Required]

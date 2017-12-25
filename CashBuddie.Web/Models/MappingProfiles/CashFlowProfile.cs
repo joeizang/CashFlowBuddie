@@ -12,7 +12,7 @@ namespace CashBuddie.Web.Models.MappingProfiles
     {
         public CashFlowProfile()
         {
-            CreateMap<CashFlow, CashFlowInputModel.CashFlowVM>().ReverseMap();
+            CreateMap<CashFlow, CashFlowVM>().ReverseMap();
             
         }
     }

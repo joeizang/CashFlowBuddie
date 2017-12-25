@@ -27,7 +27,17 @@ namespace CashFlowBuddie.Web.Entities
             
         }
 
-        [DataType(DataType.Text)]
+        public BankAccount(BankAccountEditModel account)
+        {
+            AccountName = account.NameOfAccount;
+            BankBalance = account.AccountBalance;
+            InstitutionName = account.InstitutionName;
+            CreatedAt = DateTimeOffset.UtcNow;
+            Id = account.AccountNumber;
+            
+        }
+
+    [DataType(DataType.Text)]
         [StringLength(50)]
         public string AccountName { get; private set; }
 

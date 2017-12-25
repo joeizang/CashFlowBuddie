@@ -15,12 +15,15 @@ using System.Web.Mvc;
 
 namespace CashBuddie.Web.Infrastructure.Services
 {
-    public static class BankAccountHelper
+    public class BankAccountHelper
     {
 
-        
+        private BankAccountInputModel.BankAccountResultModel ResultModel { get; set; }
 
-        public static BankAccountInputModel.BankAccountResultModel PrepareResultModel(BankAccountInputModel message)
+        private IQueryable<BankAccount> Accounts { get; set; }
+
+
+        public BankAccountHelper PrepareResultModel(BankAccountInputModel message)
         {
             var model = new BankAccountInputModel.BankAccountResultModel
             {
@@ -40,68 +43,66 @@ namespace CashBuddie.Web.Infrastructure.Services
             model.CurrentFilter = message.SearchString;
             model.SearchString = message.SearchString;
 
-            return model;
+            ResultModel = model;
+
+            return this;
         }
 
         /// <summary>
-        /// Filter BankAccounts based on inputs found in type contained in message
+        /// Filter BankAccounts based on inputs contained in message
         /// </summary>
         /// <param name="message"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public static IQueryable<BankAccount> FilterOnContext( 
-            BankAccountInputModel.BankAccountResultModel message,CashBuddieContext db)
+        public BankAccountHelper FilterOnContext(CashBuddieContext db)
         {
-            var accounts = from a in db.Accounts
+            Accounts = from a in db.Accounts
                            select a;
 
-            if (!String.IsNullOrEmpty(message.SearchString))
+            if (!String.IsNullOrEmpty(ResultModel.SearchString))
             {
-                accounts = accounts.Include(a => a.AccountHolder).Include(a => a.CashFlows)
-                                   .AsNoTracking().Where(a => a.AccountName.Contains(message.SearchString) ||
-                                   a.AccountHolder.FirstName.Contains(message.SearchString));
+                Accounts = Accounts.Include(a => a.AccountHolder).Include(a => a.CashFlows)
+                                   .AsNoTracking().Where(a => a.AccountName.Contains(ResultModel.SearchString) ||
+                                   a.AccountHolder.FirstName.Contains(ResultModel.SearchString));
             }
 
-            return accounts;
+            return this;
         }
 
-        public static IQueryable<BankAccount> SortBankAccountSet(IQueryable<BankAccount> accounts, 
-            BankAccountInputModel.BankAccountResultModel message)
+        public BankAccountHelper SortBankAccountSet()
         {
-            switch (message.CurrentSort)
+            switch (ResultModel.CurrentSort)
             {
                 case "name_desc":
-                    accounts = accounts.OrderByDescending(s => s.AccountName);
+                    Accounts = Accounts.OrderByDescending(s => s.AccountName);
                     break;
                 case "typename_desc":
-                    accounts = accounts.OrderByDescending(s => s.AccountName);
+                    Accounts = Accounts.OrderByDescending(s => s.AccountName);
                     break;
                 case "typename":
-                    accounts = accounts.OrderByDescending(s => s.AccountName);
+                    Accounts = Accounts.OrderByDescending(s => s.AccountName);
                     break;
                 case "Amount_desc":
-                    accounts = accounts.OrderByDescending(s => s.AccountName);
+                    Accounts = Accounts.OrderByDescending(s => s.AccountName);
                     break;
                 case "Amount":
-                    accounts = accounts.OrderBy(s => s.BankBalance);
+                    Accounts = Accounts.OrderBy(s => s.BankBalance);
                     break;
                 default: // Name ascending 
-                    accounts = accounts.OrderBy(s => s.AccountName);
+                    Accounts = Accounts.OrderBy(s => s.AccountName);
                     break;
             }
 
-            return accounts;
+            return this;
         }
 
-        public static BankAccountInputModel.BankAccountResultModel ToResultModel(
-            IQueryable<BankAccount> accounts, BankAccountInputModel message,
-            BankAccountInputModel.BankAccountResultModel model)
+        public BankAccountInputModel.BankAccountResultModel ToResultModel(BankAccountInputModel message)
         {
             int pageSize = 3;
             int pageNumber = (message.Page ?? 1);
 
 
-            model.Results = accounts.Select(x => new BankAccountVM
+            ResultModel.Results = Accounts.Select(x => new BankAccountVM
             {
                 InstitutionName = x.InstitutionName,
                 Amount = x.BankBalance,
@@ -109,7 +110,7 @@ namespace CashBuddie.Web.Infrastructure.Services
                 Id = x.Id,
             }).ToPagedList(pageNumber, pageSize);
 
-            return model;
+            return ResultModel;
         }
 
 
@@ -125,8 +126,7 @@ namespace CashBuddie.Web.Infrastructure.Services
         {
             var result = await db.Accounts.AsNoTracking()
                 .SingleOrDefaultAsync(b => b.AccountName.Equals(bankAccount.NameOfAccount)
-                && b.InstitutionName.Equals(bankAccount.InstitutionName) && 
-                b.Id.Equals(bankAccount.AccountNumber));
+                && b.InstitutionName.Equals(bankAccount.InstitutionName));
 
             if (result != null)
                 return true;
