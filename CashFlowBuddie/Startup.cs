@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using CashFlowBuddie.Data;
 using CashFlowBuddie.Models;
 using CashFlowBuddie.Services;
+using AutoMapper;
 
 namespace CashFlowBuddie
 {
@@ -33,10 +34,13 @@ namespace CashFlowBuddie
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

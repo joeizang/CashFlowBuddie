@@ -1,0 +1,65 @@
+﻿
+@model CashBuddie.Web.Models.InputModels.BankAccountInputModel.BankAccountResultModel
+@using CashBuddie.Web.Models.InputModels
+@using PagedList.Mvc
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Bank Accounts";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class="btn btn-primary" })
+    
+</p>
+<form method="GET">
+    <p>
+        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+</form>
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Account Number", "Index", new BankAccountInputModel { SortOrder = Model.NameSortParm, CurrentFilter = Model.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Type Of Cash Flow", "Index", new BankAccountInputModel { SortOrder = Model.DateSortParm, CurrentFilter = Model.CurrentFilter })
+        </th>
+        
+        <th></th>
+    </tr>
+
+
+    @{ int i = 0; }
+    @foreach (var item in Model.Results)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BankAccountNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InstitutionName)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { Id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new BankAccountDetailModel.BankAccountDetailInputModel { Id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete",
+                    new BankAccountDeleteModel
+                    {
+                        Id = item.Id
+                    })
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
+<br />
+    Page @(Model.Results.PageCount < Model.Results.PageNumber ? 0 : Model.Results.PageNumber) of @Model.Results.PageCount
+
+    @Html.PagedListPager(Model.Results, page => Url.Action("Index",new { Page = page, SortOrder = Model.CurrentSort, CurrentFilter = Model.CurrentFilter }))
