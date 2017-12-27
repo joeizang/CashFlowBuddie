@@ -242,6 +242,7 @@
   <ItemGroup>
     <Compile Include="Abstractions\EntityBase.cs" />
     <Compile Include="Abstractions\IEntity.cs" />
+    <Compile Include="Abstractions\ResultModelBase.cs" />
     <Compile Include="Abstractions\TupleResult.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -269,6 +270,8 @@
     <Compile Include="Infrastructure\Helpers\JsonHtmlHelper.cs" />
     <Compile Include="Infrastructure\MapperConfig\AutoMapperInitializer.cs" />
     <Compile Include="Infrastructure\Services\BankAccountHelper.cs" />
+    <Compile Include="Infrastructure\Services\CashFlowHelper.cs" />
+    <Compile Include="Abstractions\ICashBuddieHelper.cs" />
     <Compile Include="Migrations\201711202122318_initialDb.cs" />
     <Compile Include="Migrations\201711202122318_initialDb.Designer.cs">
       <DependentUpon>201711202122318_initialDb.cs</DependentUpon>
@@ -288,6 +291,9 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IndexInputModel.cs" />
     <Compile Include="Models\InputModels\CashFlowInputModel.cs" />
+    <Compile Include="Abstractions\InputModelBase.cs" />
+    <Compile Include="Models\InputModels\CashFlowSourceInputModel.cs" />
+    <Compile Include="Models\InputModels\CashFlowTypeInputModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MappingProfiles\BankAccountProfile.cs" />
     <Compile Include="Models\MappingProfiles\CashFlowProfile.cs" />
@@ -374,10 +380,10 @@
     <Content Include="Views\BankAccounts\Index.cshtml" />
     <Content Include="Views\BankAccounts\Create.cshtml" />
     <Content Include="Views\BankAccounts\Index1.cshtml" />
+    <Content Include="Views\CashFlow\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\CashFlow\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

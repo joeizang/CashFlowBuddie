@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CashBuddie.Web.Abstractions;
 using CashBuddie.Web.Models;
 using CashBuddie.Web.Models.InputModels;
 using CashFlowBuddie.Abstractions;
@@ -15,23 +16,26 @@ using System.Web.Mvc;
 
 namespace CashBuddie.Web.Infrastructure.Services
 {
-    public class BankAccountHelper
+    public class BankAccountHelper : ICashBuddieHelper
     {
 
-        private BankAccountInputModel.BankAccountResultModel ResultModel { get; set; }
+        private BankAccountResultModel ResultModel { get; set; }
 
         private IQueryable<BankAccount> Accounts { get; set; }
 
+        private InputModelBase Message { get; set; }
 
-        public BankAccountHelper PrepareResultModel(BankAccountInputModel message)
+
+        public ICashBuddieHelper PrepareResultModel(InputModelBase message)
         {
-            var model = new BankAccountInputModel.BankAccountResultModel
+            Message = message;
+            var model = new BankAccountResultModel
             {
-                CurrentSort = message.SortOrder,
-                NameSortParm = String.IsNullOrEmpty(message.SortOrder) ? "name_desc" : "",
+                CurrentSort = Message.SortOrder,
+                NameSortParm = String.IsNullOrEmpty(Message.SortOrder) ? "accountnumber_desc" : "",
             };
 
-            if (string.IsNullOrWhiteSpace(message.SearchString))
+            if (string.IsNullOrWhiteSpace(Message.SearchString))
             {
                 message.Page = 1;
             }
@@ -40,8 +44,8 @@ namespace CashBuddie.Web.Infrastructure.Services
                 message.SearchString = message.CurrentFilter;
             }
 
-            model.CurrentFilter = message.SearchString;
-            model.SearchString = message.SearchString;
+            model.CurrentFilter = Message.SearchString;
+            model.SearchString = Message.SearchString;
 
             ResultModel = model;
 
@@ -54,7 +58,7 @@ namespace CashBuddie.Web.Infrastructure.Services
         /// <param name="message"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public BankAccountHelper FilterOnContext(CashBuddieContext db)
+        public ICashBuddieHelper FilterOnContext(CashBuddieContext db)
         {
             Accounts = from a in db.Accounts
                            select a;
@@ -69,7 +73,7 @@ namespace CashBuddie.Web.Infrastructure.Services
             return this;
         }
 
-        public BankAccountHelper SortBankAccountSet()
+        public ICashBuddieHelper SortBankAccountSet()
         {
             switch (ResultModel.CurrentSort)
             {
@@ -96,10 +100,10 @@ namespace CashBuddie.Web.Infrastructure.Services
             return this;
         }
 
-        public BankAccountInputModel.BankAccountResultModel ToResultModel(BankAccountInputModel message)
+        public ResultModelBase ToResultModel(int? page_size)
         {
-            int pageSize = 3;
-            int pageNumber = (message.Page ?? 1);
+            int pageSize = 5;
+            int pageNumber = (Message.Page ?? 1);
 
 
             ResultModel.Results = Accounts.Select(x => new BankAccountVM
@@ -114,7 +118,7 @@ namespace CashBuddie.Web.Infrastructure.Services
         }
 
 
-        public static async Task<BankAccountDetailModel> FindAnAccount(BankAccountDetailModel.BankAccountDetailInputModel model,
+        public static async Task<BankAccountDetailModel> FindAnAccount(BankAccountDetailInputModel model,
             CashBuddieContext db)
         {
             return await db.Accounts.AsNoTracking().Include(a => a.CashFlows)
@@ -134,6 +138,21 @@ namespace CashBuddie.Web.Infrastructure.Services
             return false;
 
         }
+
+        //public ICashBuddieHelper FilterOnContext(DbContext db)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public ICashBuddieHelper PrepareResultModel(object message)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public object ToResultModel(object message)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //public static async Task<T> SelectAndProjectToViewModel<T,U>() where T : class where U : IEntity
         //{

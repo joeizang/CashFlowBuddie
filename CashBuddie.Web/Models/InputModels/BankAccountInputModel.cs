@@ -5,26 +5,18 @@ using System.Linq;
 using System.Web;
 using CashBuddie.Web.Models.InputModels;
 using System.ComponentModel.DataAnnotations;
+using CashBuddie.Web.Abstractions;
 
 namespace CashBuddie.Web.Models.InputModels
 {
-    public class BankAccountInputModel
+    public class BankAccountInputModel : InputModelBase
     {
-        public string SortOrder { get; set; }
-        public string CurrentFilter { get; set; }
-        public string SearchString { get; set; }
-        public int? Page { get; set; }
+        
+    }
 
-        public class BankAccountResultModel
-        {
-            public string CurrentSort { get; set; }
-            public string NameSortParm { get; set; }
-            public string DateSortParm { get; set; }
-            public string CurrentFilter { get; set; }
-            public string SearchString { get; set; }
-
-            public IPagedList<BankAccountVM> Results { get; set; }
-        }
+    public class BankAccountResultModel : ResultModelBase
+    {
+        public IPagedList<BankAccountVM> Results { get; set; }
     }
 
     public class BankAccountMessages
@@ -65,14 +57,11 @@ namespace CashBuddie.Web.Models.InputModels
         public string BankAccountNumber { get; set; }
 
         public List<CashFlowVM> Transactions { get; set; }
+    }
 
-
-        public class BankAccountDetailInputModel
-        {
-            
-            public string Id { get; set; }
-        }
-
+    public class BankAccountDetailInputModel
+    {
+        public string Id { get; set; }
     }
 
 

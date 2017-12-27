@@ -1,5 +1,8 @@
+using CashBuddie.Web.Abstractions;
+using CashBuddie.Web.Infrastructure.Services;
+using CashBuddie.Web.Models;
 using System;
-
+using System.Data.Entity;
 using Unity;
 
 namespace CashBuddie.Web
@@ -42,6 +45,8 @@ namespace CashBuddie.Web
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType<ICashBuddieHelper, CashFlowHelper>();
+            container.RegisterType<DbContext, CashBuddieContext>();
         }
     }
 }

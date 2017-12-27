@@ -1,7 +1,12 @@
-﻿using CashBuddie.Web.Models;
+﻿using AutoMapper;
+using CashBuddie.Web.Abstractions;
+using CashBuddie.Web.Models;
+using CashBuddie.Web.Models.InputModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -11,20 +16,29 @@ namespace CashBuddie.Web.Controllers
     {
         private readonly CashBuddieContext _db;
 
-        public CashFlowController(CashBuddieContext db)
+        private readonly ICashBuddieHelper _helper;
+
+        public CashFlowController(CashBuddieContext db, ICashBuddieHelper helper)
         {
             _db = db;
+            _helper = helper;
         }
         // GET: CashFlow
-        public ActionResult Index()
+        public ActionResult Index(CashFlowInputModel model)
         {
-            return View();
+            var result = _helper.PrepareResultModel(model)
+                                .FilterOnContext(_db)
+                                .SortBankAccountSet()
+                                .ToResultModel(5);
+            return View(result);
         }
 
         // GET: CashFlow/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(CashFlowDetailModel model)
         {
-            return View();
+            var result = await _db.CashFlows.AsNoTracking().Where(c => c.Id.Equals(model.Id))
+                                      .ProjectToSingleOrDefaultAsync<CashFlowDetailModel>();
+            return View(result);
         }
 
         // GET: CashFlow/Create

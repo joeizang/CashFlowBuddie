@@ -1,0 +1,73 @@
+﻿@model CashBuddie.Web.Models.InputModels.CashFlowResultModel
+@using CashBuddie.Web.Models.InputModels
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+
+<div class="row">
+    <div>
+        <form method="GET" class="col-md-6 pull-right">
+            <div class="form-group">
+                <label class="control-label">
+                    <input type="text" placeholder="Search by amount or date..." class="form-control" />
+                </label>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table">
+    <tr>
+        
+        <th>
+            Cash Activity Date
+        </th>
+        <th>
+            Cash Flow Source
+        </th>
+        <th>
+            Cash Flow Type
+        </th>
+        <th>
+            Bank Account Details
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Results.SingleOrDefault().Amount)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.Results) {
+    <tr>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.CashActivityDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Source)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BankAccountId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

@@ -15,12 +15,19 @@
     @Html.ActionLink("Create New", "Create", null, htmlAttributes: new { @class="btn btn-primary" })
     
 </p>
-<form method="GET">
-    <p>
-        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-        <input type="submit" value="Search" />
-    </p>
-</form>
+<div class="row">
+        <form method="GET" class="col-md-6 pull-right">
+            <p class="form-group">
+                Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string,
+       new { @class = "form-control", @placeholder = "Type your search here..." })
+            </p>
+            <p>
+                <input type="submit" value="Search" class="btn btn-default" />
+            </p>
+
+        </form>
+</div>
+
 <table class="table">
     <tr>
         <th>

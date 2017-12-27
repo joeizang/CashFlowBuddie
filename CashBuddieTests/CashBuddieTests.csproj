@@ -67,6 +67,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BankAccountTests\BankAccountControllerTest.cs" />
+    <Compile Include="BankAccountTests\BankAccountHelperTest.cs" />
+    <Compile Include="CashFlowTests\CashFlowHelperTest.cs" />
+    <Compile Include="CashFlowTests\TestCashFlowController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
