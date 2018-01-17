@@ -12,6 +12,7 @@ using CashFlowBuddie.Web.Entities;
 using AutoMapper;
 using CashBuddie.Web.Infrastructure.Services;
 using CashBuddie.Web.Models.InputModels;
+using CashBuddie.Web.Abstractions;
 
 namespace CashBuddie.Web.Controllers
 {
@@ -19,27 +20,30 @@ namespace CashBuddie.Web.Controllers
     {
         private readonly CashBuddieContext _db;
 
-        public BankAccountsController(CashBuddieContext db)
+        private readonly ICashBuddieHelper _helper;
+
+        public BankAccountsController(CashBuddieContext db, ICashBuddieHelper helper)
         {
             _db = db;
+            _helper = helper;
         }
 
         // GET: BankAccounts
         public ActionResult Index(BankAccountInputModel message)
         {
-            var helper = new BankAccountHelper();
+            
 
-            var results = helper.PrepareResultModel(message)
+            var results = _helper.PrepareResultModel(message)
                   .FilterOnContext(_db)
                   .SortBankAccountSet()
-                  .ToResultModel(message);
+                  .ToResultModel(5);
 
             //return model
             return View(results);
         }
 
         // GET: BankAccounts/Details/5
-        public async Task<ActionResult> Details(BankAccountDetailModel.BankAccountDetailInputModel model)
+        public async Task<ActionResult> Details(BankAccountDetailInputModel model)
         {
             if (model == null)
             {

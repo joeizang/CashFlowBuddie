@@ -1,30 +1,69 @@
-﻿using PagedList;
+﻿using CashBuddie.Web.Abstractions;
+using CashFlowBuddie.Web.Entities;
+using PagedList;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
 namespace CashBuddie.Web.Models.InputModels
 {
-    public class CashFlowInputModel
+    public class CashFlowInputModel : InputModelBase
     {
 
-        public string SortOrder { get; set; }
-        public string CurrentFilter { get; set; }
-        public string SearchString { get; set; }
-        public int? Page { get; set; }
 
     }
 
-    public class CashFlowIndexResult
+    public class CashFlowResultModel : ResultModelBase
     {
-        public string CurrentSort { get; set; }
-        public string NameSortParm { get; set; }
-        public string DateSortParm { get; set; }
-        public string CurrentFilter { get; set; }
-        public string SearchString { get; set; }
+        public IPagedList<CashFlowVM> Results { get; set; }
+    }
 
-        public IPagedList<CashFlowVM> CashFlowResults { get; set; }
+    public class CashFlowDetailModel
+    {
+        public string Id { get; set; }
+
+        public CashFlowSourceVM CashFlowSource { get; set; }
+
+        public CashFlowTypeVM CashFlowType { get; set; }
+
+        public decimal Amount { get; set; }
+
+        public DateTimeOffset Date { get; set; }
+
+        public string BankAccountName { get; set; }
+
+        public string BankAccountNumber { get; set; }
+    }
+
+    public class CreateCashFlowModel
+    {
+        [StringLength(128)]
+        public string AccountId { get;  set; }
+
+
+        public BankAccountVM BankAccount { get;  set; }
+
+        public CashFlowSourceVM CashFlowSouce { get;  set; }
+
+        [DataType(DataType.Text)]
+        [StringLength(128)]
+        public string CashFlowSourceId { get;  set; }
+
+        public CashFlowTypeVM CashFlowType { get;  set; }
+
+        [DataType(DataType.Text)]
+        [StringLength(128)]
+        public string CashFlowTypeId { get;  set; }
+
+        [Required]
+        [DataType(DataType.Currency)]
+        public decimal Amount { get;  set; }
+
+        [DataType(DataType.Text)]
+        [StringLength(100)]
+        public string Description { get; set; }
     }
 
     public class CashFlowVM
